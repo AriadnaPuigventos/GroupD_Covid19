@@ -23,13 +23,15 @@ def greet():
 
 @app.route("/c_json")
 def create_json():
-    return '{"clave":"valor", "clave_2":3}' #Aquí va nuestro json diccionario con el group_id y el token Dsum(ages)
+    return "t_d_averages.json"  #Aquí va nuestro json diccionario con el group_id y el token Dsum(ages)
 
 @app.route('/give_me_id', methods=['GET'])
 def give_id():
-    x = request.args['password']
-    if x == "12345":
-        return request.args
+    N = request.args['N']
+    if N == "d104":
+        S = request.args['S']
+        if S == "d102159467"
+            return "C:\Users\javig\OneDrive\Documents\Bootcamp\Proyecto_EDA_GroupD\GroupD_Covid19\notebooks\t_d_averages.json"
     else:
         return "No es el identificador correcto"
 
