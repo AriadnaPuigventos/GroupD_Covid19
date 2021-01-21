@@ -4,34 +4,32 @@ Date: 18/01/2021
 '''
 
 from flask import Flask, request, render_template
-from utils.folders_tb import read_json
+import json
 import os
+
+def read_json(fullpath):
+    with open(fullpath, "r") as json_file_readed:
+        json_readed = json.load(json_file_readed)
+    return json_readed
 
 # Mandatory
 app = Flask(__name__)  # __name__ --> __main__  
 
 # ---------- Flask functions ----------
-@app.route("/")  # @ --> esto representa el decorador de la función
-def home():
-    """ Default path """
-    return app.send_static_file('greet.html')
-
-@app.route("/greet")
-def greet():
-    username = request.args.get('name')
-    return render_template('index.html', name=username)
-
-@app.route("/c_json")
-def create_json():
-    return "t_d_averages.json"  #Aquí va nuestro json diccionario con el group_id y el token Dsum(ages)
-
-@app.route('/give_me_id', methods=['GET'])
-def give_id():
+@app.route('/give_n', methods=['GET'])
+def give_n():
     N = request.args['N']
     if N == "d104":
-        S = request.args['S']
-        if S == "d102159467"
-            return "C:\Users\javig\OneDrive\Documents\Bootcamp\Proyecto_EDA_GroupD\GroupD_Covid19\notebooks\t_d_averages.json"
+        return "For the next step you need -->  d102159467"
     else:
-        return "No es el identificador correcto"
+        return "No os sabeis nuestros cumpleaños"
+@app.route('/give_s', methods=['GET'])
+def give_s():
+    settings_file = os.path.dirname(__file__) + os.sep + "t_d_averages.json"
+    t_d_averages = read_json(fullpath=settings_file)
+    S = request.args['S']
+    if S == "d102159467":
+        return t_d_averages 
+    else:
+        return "I am affarid not, try again"
 
