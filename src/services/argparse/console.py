@@ -2,37 +2,20 @@
 Date: 18/01/2021
 
 '''
-
+import sys
+sys.path.append(x)
+#/Users/ariadnapuigventos/Documents/CURSOS/BRIDGE/DS_Ejercicios_Python/BootCamp_TheBridge/GitHub_DS_ARIADNA/Project_EDA_CoronaVirus_Group_D/GroupD_Covid19/src/services/argparse/console.py
 import argparse
-from my_module import exponent
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-x", "--x", type=int, help="the base")
-parser.add_argument("-y", "--y", type=int, help="the exponent", required=True)
-parser.add_argument("-v", "--v", default=0, type=int, help="the result will be multiplied by 'v'")
+parser.add_argument("-j", "--j", type=int, help="the password, for correct answer insert 18", required=True)
 args = vars(parser.parse_args())
 
-print("####################\n")
-print(type(args))
-print(args)
-base = args["x"]
-exp = args["y"]
-v = args["v"]
-result = exponent(x=base, y=exp, v=v)
-print("\nThe operation was: (x^y)*v (if v exists)\n")
-print("(" + str(base) + "^" + str(exp) + ")" + "*" + str(v) + "[if exists]" + " = " + str(result))
-print("\nThe final result is:", result)
-print("\n####################")
-# TO RUN: 
-#python Z:\Data_Science\TheBridge\Content\Contenido_Curso\data_science_nov_2020\week7\day1\python\arg_parse\1_arg_parse.py -x 2 -y 4 -v 2
+def json_df(x):
+    print(args)
+    return t_d_averages
+    #print("hola") if x == 18 else "Sorry, this is not the correct answer"
 
-# 1
-# python o python3 
-# 2
-# ruta al fichero 
-# 3
-# args
-# --help
 
-# 'python' 'ruta' 'args'
-
+base = args["j"]
+print(json_df(x=base))
