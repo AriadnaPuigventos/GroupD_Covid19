@@ -15,6 +15,7 @@ def read_json(fullpath):
         json_readed = json.load(json_file_readed)
     return json_readed
 
+
 # Mandatory
 app = Flask(__name__)  # __name__ --> __main__  
 
@@ -40,6 +41,7 @@ def give_s():
     t_d_averages = read_json(fullpath=settings_file)
     S = request.args['S']
     if S == "d102159467":
+        downloader()
         return t_d_averages 
     else:
         return "I am affraid not, try again"
