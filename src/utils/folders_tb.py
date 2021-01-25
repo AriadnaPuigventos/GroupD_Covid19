@@ -12,6 +12,9 @@ def readcsv(ruta):
       df = pd.read_csv(ruta, sep = ",")
       return df
 
+def downloader(url ):
+    df = pd.read_csv(url)
+    return df 
 
 def read_json(fullpath):
     with open(fullpath, "r") as json_file_readed:
