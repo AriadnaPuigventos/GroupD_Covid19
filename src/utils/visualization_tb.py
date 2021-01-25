@@ -7,137 +7,84 @@ import pandas as pd #Instalado
 import matplotlib.pyplot as plt #Instalado
 import seaborn as sns #Instalado
 from sklearn.preprocessing import LabelEncoder #Instalado
+import plotly.express as px
+import plotly.graph_objects as go
 
 
-majors = pd.read_csv("/Users/ariadnapuigventos/Documents/CURSOS/BRIDGE/DS_Ejercicios_Python/BootCamp_TheBridge/Proyecto_Navidad_Ariadna/documentation/world_marathon_majors.csv", sep = ";")
-time_column = pd.to_timedelta(majors["time"].str.strip())
-print(time_column)
+def b_2_line(df, x, y, title ):
+    fig=px.line(df, x= x, y= y, title= title)
+    fig.update_xaxes(dtick="M1",tickformat="%b\n%Y")
+    fig.show()
+    plt.savefig()
 
-def detect_outliers():
-    #Detecting outliers about time because it exists much diference with de first and the last time.
-    outliers = sns.boxplot(x = time_column.astype('timedelta64[s]'))
-    print(outliers)
-    Q1 = time_column.astype('timedelta64[s]').quantile(0.25)
-    print(Q1)
-    Q3 = time_column.astype('timedelta64[s]').quantile(0.75)
-    print(Q3)
-    IQR = Q3 - Q1
-    print(IQR)
+def b_2_dots (df, x, y, title ):
+    fig = px.scatter(df, x=x, y=y, title=title)
+    fig.show()
+    plt.savefig()
 
-diccionario = dict(majors["country"].value_counts())
-country_table = pd.DataFrame(diccionario, index = ["country"]).T
-mylabels = country_table.index
-
-def piechart_repitepais():
-    #Get the proportion each item of the total pie chart.
-    counts = []
-    for value in diccionario.values():
-        counts.append(value)
-    print(counts)
-    mylabels = country_table.index #str lista de países
-    mysize = counts #int cantidad de veces que se repiten
-    plt.pie(mysize, labels = mylabels, autopct='%1.1f%%', shadow=True, startangle=90)
-    plt.title("Countries")
-    plt.axis('equal')
-    plt.show()
-
-dict1 = {"Country" : ['Kenya', 'United States', 'Ethiopia', 'Germany', 'United Kingdom', 'Japan', 'Norway', 'Canada', 'Portugal', 'Finland', 'Mexico', 'Russia', 'Poland', 'Brazil', 'Italy', 'New Zealand', 'Morocco', 'Belgium', 'South Africa', 'Tanzania', 'Australia', 'South Korea', 'Ireland', 'Latvia', 'Spain', 'Denmark', 'Colombia', 'Greece', 'Switzerland', 'Romania', 'Sweden', 'Yugoslavia', 'Hungary', 'China', 'Guatemala', 'Eritrea', 'Soviet Union'], "Counts" : [136, 104, 51, 36, 35, 22, 20, 17, 11, 10, 10, 8, 8, 7, 6, 5, 5, 5, 5, 4, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1]}
-Countries = pd.DataFrame(dict1)
-
-def Pie_Top10_Countries():
-    # Firstly, it needs re-organizate the main dataframe and create a new one.
-    Top_10_Countries = Countries[:10].copy()
-    new_row = pd.DataFrame(data = {"Country" : ["Others"], "Counts" : [Countries["Counts"][10:].sum()]})
-    Top_others = pd.concat([Top_10_Countries, new_row])
-    # To create pie:
-    fig1, ax1 = plt.subplots(figsize = (10,7))
-    ax1.pie(Top_others["Counts"], labels = Top_others["Country"], autopct='%1.1f%%', shadow=True, startangle=90)
-    plt.title("Countries Winners Marathon")
-    ax1.axis('equal')
-    plt.legend(Top_others["Country"], bbox_to_anchor=(1.10, 1), loc= 'upper left')
-    plt.suptitle("Top 10 Countries", fontsize=12)
-    plt.show()
-    plt.savefig('Top_10_Countries.png')
-
-def histogram_time():
-    majors["time"] = pd.to_timedelta(majors["time"].str.strip())
-    majors["time"] = majors["time"].astype('timedelta64[s]')
-    majors["time"].hist(bins=5, legend="time", grid=False)
-    plt.show()
-    plt.savefig('Hist_time.png')
-
-def histogram_year_time():
-    print(majors.hist(bins=5))
-    plt.show()
-    plt.savefig('Hist_year_time.png')
-
-def histogram_gender():
-    majors["gender"] = majors["gender"].astype('category')
-    print(majors["gender"].hist(bins=5, legend="Gender", grid=False))
-    plt.show()
-    plt.savefig('Hist_gender.png')
-
-def histogram_country():
-    majors.country = majors.country.astype('category')
-    print(majors.country.hist(bins=5, legend="Countries", grid=False))
-    print("Get better another argument to see almost it")
-
-def histogram_countryby37bins():
-    majors.country = majors.country.astype('category')
-    graphic = majors["country"].hist(bins=36, legend="Countries", grid=False, figsize=(20, 5))
-    plt.xticks(rotation='vertical')
-    plt.show()
-    plt.savefig('Hist_Countries.png')
-
-def matrix():
-    #To change type columns from object to encoding for showing a correlation matrix.
-    majors['gender_1'] = majors['gender'].apply(lambda x: 0 if x == "Male" else 1)
-    print(majors['gender_1'])
-    majors["time"] = time_column.astype('timedelta64[s]')
-    print(majors["time"])
-    le = LabelEncoder()
-    majors["encoded_country"] = le.fit_transform(majors["country"])
-    print(majors["encoded_country"])
-    majors["encoded_marathon"] = le.fit_transform(majors["marathon"])
-    print(majors["encoded_marathon"])
-    #To show the correlation Matrix with columns dataframe 1.
-    plt.figure(figsize=(10,5))
-    matrix = majors.corr()
-    sns.heatmap(matrix, cmap="BrBG",annot=True)
-    print(matrix)
-
-def matrix_1960():
-    majors['gender_1'] = majors['gender'].apply(lambda x: 0 if x == "Male" else 1)
-    print(majors['gender_1'])
-    majors["time"] = time_column.astype('timedelta64[s]')
-    print(majors["time"])
-    le = LabelEncoder()
-    majors["encoded_country"] = le.fit_transform(majors["country"])
-    print(majors["encoded_country"])
-    majors["encoded_marathon"] = le.fit_transform(majors["marathon"])
-    print(majors["encoded_marathon"])
-    #To show the correlation Matrix from 1960 when Kenya was the first time compete in BWMM, almost in 1967 was the first woman who started to compete there as well.
-    s_df = pd.DataFrame(majors[63:536])
-    print(s_df)
-    plt.figure(figsize=(10,5))
-    matriz = s_df.corr()
-    sns.heatmap(matriz, cmap="BrBG",annot=True)
-    print(matriz)
-
-# PIE CHART TIME SPENT HOURS
-def time_spent():
-    dict2 = {"Tasks": ["Searching datasets", "Path control", "Working in modules: functions, bucles...", "Wrangling Data: NaN, duplicates, outliers", "Visualization Data: graphics, boxplots", "Analyzing results", "Researching for value added"], "Hours": [32, 15, 72, 24, 192, 24, 12]}
-    Tasks = pd.DataFrame(dict2)
-    print(Tasks)
-    Tasks.plot.pie(y='Hours', figsize=(5,5),labels=Tasks['Tasks'], autopct='%1.1f%%', shadow=True, startangle=90)
-    plt.title("Time Spent")
-    plt.legend(Tasks["Tasks"], bbox_to_anchor=(1.10, 1), loc= 'upper left')
-    plt.suptitle("Main Tasks", fontsize=12)
-    plt.show()
-    plt.savefig('Pie_Time_Spent.png')
-
+def b_2_bar(df, x, y, title ):
+    fig=px.bar(df, x= x, y=y, title= title)
+    fig.update_xaxes(
+    dtick="M1",
+    tickformat="%b\n%Y")
+    fig.update_layout( autosize=False,
+    width=5000,
+    height=500,
+    margin=dict(l=0, r=0, t=0, b=0))
+    fig.show() 
+    plt.savefig()
 
 #Ideas Gráficos: https://pandas.pydata.org/pandas-docs/stable/user_guide/visualization.html
 import numpy as np
 
 
+#This function is to show GroupC's Data about Total Cases during 2020-21
+def groupC_plot(df):
+    df = pd.read_json("http://apiprojectdata.ddns.net:5000/token:C98453658")
+    grupoC = df.dropna(how = "any")
+    total_cases = df.plot(figsize=(12,8))
+    total_cases.set_xlabel("Date")
+    total_cases.set_ylabel("Total Cases")
+    total_cases.set_title("Json Group C")
+    plt.show()
+    plt.savefig('Total_Cases_GroupC')
+
+def position(df, col1=None, col2=None, col3=None, col4=None, col5=None, col6=None, col7=None):
+    df_posicion = df.groupby(col1).sum([col3, col4]).drop(df.columns.difference([col1, col2, col3, col4, col5, col6, col7]), 1)
+    df_posicion_rank = df_posicion.rank().sort_values(by=[col3, col4], ascending=True)
+    ven_rank = df_posicion_rank.loc["VEN"]
+    esp_rank = df_posicion_rank.loc["ESP"]
+    gbr_rank = df_posicion_rank.loc["GBR"]
+    tur_rank = df_posicion_rank.loc["TUR"]
+    prt_rank = df_posicion_rank.loc["PRT"]
+    countries_d_ranking = pd.concat([ven_rank, esp_rank, gbr_rank, tur_rank, prt_rank])
+    countries_d_ranking = pd.DataFrame([ven_rank, esp_rank, gbr_rank, tur_rank, prt_rank], columns=[col3, col4])
+    countries_d_ranking = countries_d_ranking.astype(int)
+    countries_d_ranking = countries_d_ranking.sort_values(by=col4)
+    x = np.arange(len(countries_d_ranking.index))  # the label locations
+    width = 0.35  # the width of the bars
+    fig, ax = plt.subplots(figsize=(10, 10))
+    rects1 = ax.bar(x - width/2, countries_d_ranking[col3], width, label='New Cases', color='b')
+    rects2 = ax.bar(x + width/2, countries_d_ranking[col4], width, label='New Deaths', color='k')
+    # Add some text for labels, title and custom x-axis tick labels, etc.
+    ax.set_ylabel('Position')
+    ax.set_title('Ranking Countries by General position')
+    ax.set_xticks(x)
+    ax.set_xticklabels(countries_d_ranking.index)
+    ax.legend()
+    plt.show()
+    plt.savefig('Position_Countries')
+
+def C10a(df):
+    uk = df[df["iso_code"]=="GBR"]
+    uk = uk.drop(uk.columns.difference(["iso_code", "date", "total_cases", "new_cases", "total_deaths", "new_deaths", "total_deaths_per_million", "life_expectancy"]), 1)
+    GBR = uk.dropna(how= "any", inplace = False)
+    port = world[world["iso_code"]=="PRT"]
+    port = port.drop(port.columns.difference(["iso_code", "date", "total_cases", "new_cases", "total_deaths", "new_deaths", "total_deaths_per_million", "life_expectancy"]), 1)
+    PRT = port.dropna(how= "any", inplace = False)
+    turk = world[world["iso_code"]=="TUR"]
+    turk = turk.drop(turk.columns.difference(["iso_code", "date", "total_cases", "new_cases", "total_deaths", "new_deaths", "total_deaths_per_million", "life_expectancy"]), 1)
+
+
+# df_posicion = df.groupby("iso_code").sum(["new_deaths", "new_cases"]).drop(world.columns.difference(["iso_code", "date", "new_cases", "new_deaths"]), 1)
+# df_posicion_rank = df_posicion.rank().sort_values(by=["new_cases", "new_deaths"], ascending=True)
