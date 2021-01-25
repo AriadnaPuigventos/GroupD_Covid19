@@ -26,7 +26,7 @@ app = Flask(__name__)  # __name__ --> __main__
 def give_default():
     return "Start the adventure!"
 
-#This function has done by Javi Gil. 
+#These functions have done by Javi Gil. 
 @app.route('/give_n', methods=['GET'])
 def give_n():
     N = request.args['N']
@@ -41,7 +41,6 @@ def give_s():
     t_d_averages = read_json(fullpath=settings_file)
     S = request.args['S']
     if S == "d102159467":
-        downloader()
         return t_d_averages 
     else:
         return "I am affraid not, try again"

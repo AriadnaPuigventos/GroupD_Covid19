@@ -12,6 +12,9 @@ def readcsv(ruta):
       df = pd.read_csv(ruta, sep = ",")
       return df
 
+def downloader(df):
+    world = pd.read_csv('https://covid.ourworldindata.org/data/owid-covid-data.csv')
+    return world 
 
 def read_json(fullpath):
     with open(fullpath, "r") as json_file_readed:

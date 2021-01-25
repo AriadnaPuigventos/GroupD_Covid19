@@ -5,6 +5,8 @@ Date: 18/01/2021
 import os, sys, json
 sys.path
 import argparse
+import pandas as pd
+
 #from services.api.server import give_s
 
 #This function and code has been made by Ariadna.
@@ -21,14 +23,14 @@ print(args)
 base = args["j"]
 
 if base == 18:
-    path = os.getcwd()
-    print(path)
-    for i in range(1):
+    json_groupD = pd.read_json("http://0.0.0.0:6060/give_s?S=d102159467")
+    print(json_groupD)
+    """for i in range(1):
         path = os.path.dirname(path)
         sys.path.append(path)
         suerte = sys.path + os.sep + "api/t_d_averages.json"
         t_d_averages = read_json(fullpath=suerte)
-        print(t_d_averages)
+        print(t_d_averages)"""
 else:
     print("Try again, please")
 
