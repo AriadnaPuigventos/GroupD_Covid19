@@ -79,12 +79,75 @@ def C10a(df):
     uk = df[df["iso_code"]=="GBR"]
     uk = uk.drop(uk.columns.difference(["iso_code", "date", "total_cases", "new_cases", "total_deaths", "new_deaths", "total_deaths_per_million", "life_expectancy"]), 1)
     GBR = uk.dropna(how= "any", inplace = False)
-    port = world[world["iso_code"]=="PRT"]
+    port = df[df["iso_code"]=="PRT"]
     port = port.drop(port.columns.difference(["iso_code", "date", "total_cases", "new_cases", "total_deaths", "new_deaths", "total_deaths_per_million", "life_expectancy"]), 1)
     PRT = port.dropna(how= "any", inplace = False)
-    turk = world[world["iso_code"]=="TUR"]
+    turk = df[df["iso_code"]=="TUR"]
     turk = turk.drop(turk.columns.difference(["iso_code", "date", "total_cases", "new_cases", "total_deaths", "new_deaths", "total_deaths_per_million", "life_expectancy"]), 1)
+    TUR = turk.dropna(how= "any", inplace = False)
+    esp = df[df["iso_code"]=="ESP"]
+    esp = esp.drop(esp.columns.difference(["iso_code", "date", "total_cases", "new_cases", "total_deaths", "new_deaths", "total_deaths_per_million", "life_expectancy"]), 1)
+    ESP = esp.dropna(how= "any", inplace = False)
+    ven = df[df["iso_code"]=="VEN"]
+    ven = ven.drop(ven.columns.difference(["iso_code", "date", "total_cases", "new_cases", "total_deaths", "new_deaths", "total_deaths_per_million", "life_expectancy"]), 1)
+    VEN = ven.dropna(how= "any", inplace = False)
+    df10 = pd.concat([GBR, PRT, TUR, ESP, VEN])
+    df10.dropna(how="any", inplace=False)
+    Countries5 = df10.groupby("iso_code").agg({"new_cases": [sum], "new_deaths": [sum], "total_cases": [max], "total_deaths": [max]})
+    
+    labels = Countries5.index
+    total_cases = Countries5[( 'total_cases', 'max')]
+    total_deaths = Countries5[('total_deaths', 'max')]
 
+    x = np.arange(len(labels))  # the label locations
+    width = 0.35  # the width of the bars
+
+    fig, ax = plt.subplots()
+    rects1 = ax.bar(x - width/2, total_cases, width, label='Total Cases', color="b")
+    rects2 = ax.bar(x + width/2, total_deaths, width, label='Total Deaths', color="k")
+
+    # Add some text for labels, title and custom x-axis tick labels, etc.
+    ax.set_ylabel('Total')
+    ax.set_title('Total cases and deaths by Countries')
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels)
+    ax.legend()
+    def autolabel(rects):
+        for rect in rects:
+            height = rect.get_height()
+            ax.annotate('{}'.format(height),
+                    xy=(rect.get_x() + rect.get_width() / 2, height),
+                    xytext=(0, 3),  # 3 points vertical offset
+                    textcoords="offset points",
+                    ha='center', va='bottom')
+    autolabel(rects1)
+    autolabel(rects2)
+    fig.tight_layout()
+    plt.show()
+    plt.savefig('Total_cases_deaths_by_countries')
+
+def C10c(df):
+    uk = df[df["iso_code"]=="GBR"]
+    uk = uk.drop(uk.columns.difference(["iso_code", "date", "total_cases", "new_cases", "total_deaths", "new_deaths", "total_deaths_per_million", "life_expectancy"]), 1)
+    GBR = uk.dropna(how= "any", inplace = False)
+    port = df[df["iso_code"]=="PRT"]
+    port = port.drop(port.columns.difference(["iso_code", "date", "total_cases", "new_cases", "total_deaths", "new_deaths", "total_deaths_per_million", "life_expectancy"]), 1)
+    PRT = port.dropna(how= "any", inplace = False)
+    turk = df[df["iso_code"]=="TUR"]
+    turk = turk.drop(turk.columns.difference(["iso_code", "date", "total_cases", "new_cases", "total_deaths", "new_deaths", "total_deaths_per_million", "life_expectancy"]), 1)
+    TUR = turk.dropna(how= "any", inplace = False)
+    esp = df[df["iso_code"]=="ESP"]
+    esp = esp.drop(esp.columns.difference(["iso_code", "date", "total_cases", "new_cases", "total_deaths", "new_deaths", "total_deaths_per_million", "life_expectancy"]), 1)
+    ESP = esp.dropna(how= "any", inplace = False)
+    ven = df[df["iso_code"]=="VEN"]
+    ven = ven.drop(ven.columns.difference(["iso_code", "date", "total_cases", "new_cases", "total_deaths", "new_deaths", "total_deaths_per_million", "life_expectancy"]), 1)
+    VEN = ven.dropna(how= "any", inplace = False)
+    df10 = pd.concat([GBR, PRT, TUR, ESP, VEN])
+    df10.dropna(how="any", inplace=False)
+    Countries5 = df10.groupby("iso_code").agg({"new_cases": [sum], "new_deaths": [sum], "total_cases": [max], "total_deaths": [max]})
+    sns.boxplot(x=Countries5[('total_deaths', 'max')])
+    plt.show()
+    plt.savefig('Outliers')
 
 # df_posicion = df.groupby("iso_code").sum(["new_deaths", "new_cases"]).drop(world.columns.difference(["iso_code", "date", "new_cases", "new_deaths"]), 1)
 # df_posicion_rank = df_posicion.rank().sort_values(by=["new_cases", "new_deaths"], ascending=True)
