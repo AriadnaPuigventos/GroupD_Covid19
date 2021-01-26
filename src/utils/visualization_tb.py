@@ -34,6 +34,14 @@ def b_2_bar(df, x, y, title ):
     fig.show() 
     plt.savefig()
 
+def b_2_pie(df, column1, column2, title):
+    pie= []
+    pie.append(column1.mean())
+    pie.append(column2.mean())
+    fig = px.pie(df, values=pie, names=['new_cases','new_deaths' ], title=title)
+    fig.show()
+    
+
 #Ideas Gráficos: https://pandas.pydata.org/pandas-docs/stable/user_guide/visualization.html
 import numpy as np
 
